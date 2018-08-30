@@ -34,6 +34,10 @@ namespace Opencare.Pages.Students
         {
             var teachersList = await UserManager.GetUsersInRoleAsync("Teachers");
 
+            //var user = await UserManager.FindByIdAsync(UserManager.GetUserId(User));
+
+            //await UserManager.AddToRoleAsync(user, "Teachers");            
+
             Teachers = teachersList.Select(x =>
                         new SelectListItem()
                         {
