@@ -22,7 +22,7 @@ namespace Opencare.Pages.Users
 
         public IList<ApplicationUser> Users { get; set; }
 
-        public async Task OnGetAsync()
+        public void OnGet()
         {
             var users = Context.ApplicationUsers;
             Users = users.ToList();
