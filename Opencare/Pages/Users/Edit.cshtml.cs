@@ -56,6 +56,9 @@ namespace Opencare.Pages.Users
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Is Teacher")]
+            public bool IsTeacher { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -129,6 +132,11 @@ namespace Opencare.Pages.Users
             }
 
             await UserManager.UpdateAsync(user);
+
+            if (Input.IsTeacher)
+            {
+                await UserManager.AddToRoleAsync(user, "Teachers");
+            }
 
             StatusMessage = "Your profile has been updated";
             return RedirectToPage("./Index");
