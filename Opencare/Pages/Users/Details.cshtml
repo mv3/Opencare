@@ -1,0 +1,117 @@
+﻿@page
+@model Opencare.Pages.Users.DetailsModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+
+<div>
+    <h4>@Html.DisplayFor(model => model.AppUser.UserName)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.Email)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.Email)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.AppUser.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.AppUser.PhoneNumber)
+        </dd>
+    </dl>
+</div>
+
+<h4>Students</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].Birthdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].Status)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Students)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthdate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Children</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Children[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Children[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Children[0].Birthdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Children[0].Status)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Children)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthdate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
