@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -24,13 +25,60 @@ namespace Opencare.Pages.Users
 
         }
 
-        [BindProperty]
+
+        [TempData]
+        public string StatusMessage { get; set; }
+
+        public string Username { get; set; }
+
         public ApplicationUser AppUser { get; set; }
 
-        public IActionResult OnGet(string id)
+        [BindProperty]
+        public InputModel Input { get; set; }
+
+        public class InputModel
         {
-            AppUser = Context.ApplicationUsers.FirstOrDefault(
-                                             m => m.Id == id);
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "First name")]
+            public string FirstName { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Last name")]
+            public string LastName { get; set; }
+
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string Email { get; set; }
+
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
+        }
+
+        public async Task<IActionResult> OnGetAsync(string id)
+        {
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound($"Unable to load user with ID '{UserManager.GetUserId(User)}'.");
+            }
+
+            var userName = await UserManager.GetUserNameAsync(user);
+            var email = await UserManager.GetEmailAsync(user);
+            var phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+
+            Username = userName;
+
+            Input = new InputModel
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = email,
+                PhoneNumber =  phoneNumber
+            };
 
             return Page();
         }
@@ -42,48 +90,48 @@ namespace Opencare.Pages.Users
                 return Page();
             }
 
-            // Fetch Contact from DB to get OwnerID.
-            //var user = await Context
-            //    .ApplicationUsers.AsNoTracking()
-            //    .FirstOrDefaultAsync(m => m.Id == id);
-
-            //if (user == null)
-            //{
-            //    return NotFound();
-            //}
-
-            //var isAuthorized = await AuthorizationService.AuthorizeAsync(
-            //                                         User, user,
-            //                                         StudentOperations.Update);
-            //if (!isAuthorized.Succeeded)
-            //{
-            //    return new ChallengeResult();
-            //}
-
-            Context.Attach(AppUser).State = EntityState.Modified;
-
-            try
+            var user = await UserManager.FindByIdAsync(id);
+            if (user == null)
             {
-                await Context.SaveChangesAsync();
+                return NotFound($"Unable to load user with ID '{UserManager.GetUserId(User)}'.");
             }
-            catch
+
+            if (Input.FirstName != user.FirstName)
             {
-                if (!Context.ApplicationUsers.Any(e => e.Id == AppUser.Id))
+                user.FirstName = Input.FirstName;
+            }
+
+            if (Input.LastName != user.LastName)
+            {
+                user.LastName = Input.LastName;
+            }
+
+            var email = await UserManager.GetEmailAsync(user);
+            if (Input.Email != email)
+            {
+                var setEmailResult = await UserManager.SetEmailAsync(user, Input.Email);
+                if (!setEmailResult.Succeeded)
                 {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
+                    var userId = await UserManager.GetUserIdAsync(user);
+                    throw new InvalidOperationException($"Unexpected error occurred setting email for user with ID '{userId}'.");
                 }
             }
 
+            var phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+            if (Input.PhoneNumber != phoneNumber)
+            {
+                var setPhoneResult = await UserManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
+                if (!setPhoneResult.Succeeded)
+                {
+                    var userId = await UserManager.GetUserIdAsync(user);
+                    throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
+                }
+            }
+
+            await UserManager.UpdateAsync(user);
+
+            StatusMessage = "Your profile has been updated";
             return RedirectToPage("./Index");
-        }
-
-        private bool StudentExists(int id)
-        {
-            return Context.Student.Any(e => e.StudentId == id);
         }
     }
 }

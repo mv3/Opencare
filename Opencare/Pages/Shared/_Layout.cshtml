@@ -40,6 +40,10 @@
                     {
                         <li><a asp-page="/Students/Index">Students</a></li>
                     }
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <li><a asp-page="/Users/Index">Users</a></li>
+                    }
                 </ul>
                 <partial name="_LoginPartial" />
             </div>
