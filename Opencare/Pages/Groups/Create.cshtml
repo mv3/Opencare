@@ -34,6 +34,13 @@
                 <span asp-validation-for="Group.MaxAge" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Group.TeacherId" class="control-label"></label>
+                <select asp-for="Group.TeacherId" asp-items="@(new SelectList(Model.Teachers, "Value", "Text"))">
+                    <option value="">Unassigned</option>
+                </select>
+                <span asp-validation-for="Group.TeacherId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>

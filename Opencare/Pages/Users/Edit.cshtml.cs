@@ -72,6 +72,7 @@ namespace Opencare.Pages.Users
             var userName = await UserManager.GetUserNameAsync(user);
             var email = await UserManager.GetEmailAsync(user);
             var phoneNumber = await UserManager.GetPhoneNumberAsync(user);
+            var isTeacher = await UserManager.IsInRoleAsync(user, "Teachers");
 
             Username = userName;
 
@@ -80,7 +81,8 @@ namespace Opencare.Pages.Users
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = email,
-                PhoneNumber =  phoneNumber
+                PhoneNumber =  phoneNumber,
+                IsTeacher = isTeacher
             };
 
             return Page();

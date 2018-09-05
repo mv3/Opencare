@@ -16,5 +16,8 @@ namespace Opencare.Models
         public int MinAge { get; set; }
         [Display(Name = "Maximum Age")]
         public int MaxAge { get; set; }
+
+        [Display(Name = "Teacher")]
+        public string TeacherId { get; set; }
     }
 }
