@@ -29,6 +29,8 @@ namespace Opencare.Models
 
         [Display(Name = "Group")]
         public int GroupId { get; set; }
+
+        public Group Group { get; set; }
     }
 
     public enum EnrollmentStatus

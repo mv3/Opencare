@@ -19,5 +19,7 @@ namespace Opencare.Models
 
         [Display(Name = "Teacher")]
         public string TeacherId { get; set; }
+
+        public ICollection<Student> Students { get; set; }
     }
 }
