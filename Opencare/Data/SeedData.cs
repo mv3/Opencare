@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Opencare.Authorization;
+using System.Collections.Generic;
 
 namespace Opencare.Data
 {
@@ -24,15 +25,30 @@ namespace Opencare.Data
                 var adminID = await EnsureUser(serviceProvider, testUserPw, "admin@o.com", "Admin", "Admin");
                 await EnsureRole(serviceProvider, adminID, Constants.AdministratorsRole);
 
-                // allowed user can create and edit contacts that they create
-                var teacherID = await EnsureUser(serviceProvider, testUserPw, "teacher@o.com", "Good", "Teacher");
+                List<string> teachers = new List<string>();
+                List<string> parents = new List<string>();
+
+                // Teachers
+                var teacherID = await EnsureUser(serviceProvider, testUserPw, "teacher@o.com", "Baby", "Teacher");
                 await EnsureRole(serviceProvider, teacherID, Constants.TeachersRole);
+                teachers.Add(teacherID);
+                var teacherID2 = await EnsureUser(serviceProvider, testUserPw, "teacher2@o.com", "Tot", "Teacher");
+                await EnsureRole(serviceProvider, teacherID2, Constants.TeachersRole);
+                teachers.Add(teacherID2);
+                var teacherID3 = await EnsureUser(serviceProvider, testUserPw, "teacher3@o.com", "Bigkid", "Teacher");
+                await EnsureRole(serviceProvider, teacherID3, Constants.TeachersRole);
+                teachers.Add(teacherID3);
 
-                // allowed user can create and edit contacts that they create
-                var parentID = await EnsureUser(serviceProvider, testUserPw, "parent@o.com", "Guy", "A");
+                // Parents
+                var parentID = await EnsureUser(serviceProvider, testUserPw, "parent@o.com", "Parent", "Mom");
                 await EnsureRole(serviceProvider, parentID, Constants.ParentsRole);
+                parents.Add(parentID);
+                var parentID2 = await EnsureUser(serviceProvider, testUserPw, "parent2@o.com", "Parent", "Mann");
+                await EnsureRole(serviceProvider, parentID2, Constants.ParentsRole);
+                parents.Add(parentID2);
 
-                SeedDB(context, adminID);
+
+                SeedDB(context, adminID, teachers, parents);
             }
         }
 
@@ -81,12 +97,39 @@ namespace Opencare.Data
             return IR;
         }
 
-        public static void SeedDB(ApplicationDbContext context, string adminID)
+        public static void SeedDB(ApplicationDbContext context, string adminID, List<string> teachers, List<string> parents)
         {
             if (context.Student.Any())
             {
                 return;   // DB has been seeded
             }
+
+            context.Group.AddRange(
+                new Group
+                {
+                    Name = "Infants",
+                    Room = "1",
+                    MinAge = 0,
+                    MaxAge = 1,
+                    TeacherId = teachers[0]
+                },
+                new Group
+                {
+                    Name = "Toddlers",
+                    Room = "2",
+                    MinAge = 1,
+                    MaxAge = 2,
+                    TeacherId = teachers[1]
+                },
+                new Group
+                {
+                    Name = "Preschool",
+                    Room = "3",
+                    MinAge = 3,
+                    MaxAge = 4,
+                    TeacherId = teachers[2]
+                }
+                );
 
             context.Student.AddRange(
                 new Student
@@ -94,8 +137,8 @@ namespace Opencare.Data
                     FirstName = "Debra",
                     LastName = "Garcia",
                     Birthdate = new DateTime(2016, 05, 05),
-                    Status = EnrollmentStatus.Enrolled,
-                    ParentID = adminID
+                    Status = EnrollmentStatus.Pending,
+                    ParentID = parents[0]
                 },
                 new Student
                 {
@@ -103,15 +146,31 @@ namespace Opencare.Data
                     LastName = "Orton",
                     Birthdate = new DateTime(2017, 05, 05),
                     Status=EnrollmentStatus.Pending,
-                    ParentID = adminID
+                    ParentID = parents[0]
                 },
                 new Student
                 {
                     FirstName = "Diliana",
                     LastName = "Alexieva-Bosseva",
                     Birthdate = new DateTime(2018, 05, 05),
-                    Status=EnrollmentStatus.NotEnrolled,
-                    ParentID = adminID
+                    Status=EnrollmentStatus.Pending,
+                    ParentID = parents[0]
+                },
+                new Student
+                {
+                    FirstName = "Bob",
+                    LastName = "Kidd",
+                    Birthdate = new DateTime(2017, 05, 05),
+                    Status = EnrollmentStatus.Pending,
+                    ParentID = parents[1]
+                },
+                new Student
+                {
+                    FirstName = "Sally",
+                    LastName = "Kidd",
+                    Birthdate = new DateTime(2018, 05, 05),
+                    Status = EnrollmentStatus.Pending,
+                    ParentID = parents[1]
                 }
             );
             context.SaveChanges();
