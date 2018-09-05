@@ -19,6 +19,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Group[0].Room)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group[0].MinAge)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Group[0].MaxAge)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -30,6 +36,12 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Room)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinAge)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MaxAge)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

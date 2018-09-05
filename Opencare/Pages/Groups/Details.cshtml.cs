@@ -21,6 +21,8 @@ namespace Opencare.Pages.Groups
 
         public Group Group { get; set; }
 
+        public List<Student> Students { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -34,6 +36,9 @@ namespace Opencare.Pages.Groups
             {
                 return NotFound();
             }
+
+            Students = await _context.Student.Where(s => s.GroupId == id).ToListAsync();
+
             return Page();
         }
     }

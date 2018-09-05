@@ -23,7 +23,54 @@
         <dd>
             @Html.DisplayFor(model => model.Group.Room)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.MinAge)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.MaxAge)
+        </dd>
     </dl>
+</div>
+
+<div>
+    <h4>Students</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Students[0].FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Students[0].LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Students[0].Birthdate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Students[0].Status)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Students)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Birthdate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 <div>
     <a asp-page="./Edit" asp-route-id="@Model.Group.Id">Edit</a> |
