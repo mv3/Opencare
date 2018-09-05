@@ -39,7 +39,7 @@ namespace Opencare.Pages.Users
             }
             else
             {
-                Students = await Context.Student.Where(s => s.TeacherId == AppUser.Id).ToListAsync();
+                //Students = await Context.Student.Where(s => s.TeacherId == AppUser.Id).ToListAsync();
                 Children = await Context.Student.Where(s => s.ParentID == AppUser.Id).ToListAsync();
             }
 

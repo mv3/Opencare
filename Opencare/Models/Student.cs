@@ -24,8 +24,11 @@ namespace Opencare.Models
         // User ID From AspNetUsers table.
         public string ParentID { get; set; }
 
-        [Display(Name = "Teacher")]
-        public string TeacherId { get; set; }
+        //[Display(Name = "Teacher")]
+        //public string TeacherId { get; set; }
+
+        [Display(Name = "Group")]
+        public int GroupId { get; set; }
     }
 
     public enum EnrollmentStatus

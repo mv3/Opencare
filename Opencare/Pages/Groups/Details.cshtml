@@ -1,0 +1,31 @@
+﻿@page
+@model Opencare.Pages.Groups.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Group</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.Name)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Group.Room)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Group.Room)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.Group.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -28,19 +28,17 @@ namespace Opencare.Pages.Students
         [BindProperty]
         public Student Student { get; set; }
 
-        public IEnumerable<SelectListItem> Teachers { get; set; }
+        public IEnumerable<SelectListItem> Groups { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            var teachersList = await UserManager.GetUsersInRoleAsync("Teachers");
+            var groupList = await Context.Group.ToListAsync();     
 
-     
-
-            Teachers = teachersList.Select(x =>
+            Groups = groupList.Select(x =>
                         new SelectListItem()
                         {
-                            Text = x.FirstName + " " + x.LastName,
-                            Value = x.Id
+                            Text = x.Name,
+                            Value = x.Id.ToString()
                         });
 
             Student = await Context.Student.FirstOrDefaultAsync(

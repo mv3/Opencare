@@ -25,5 +25,7 @@ namespace Opencare.Data
         public DbSet<Opencare.Models.Student> Student { get; set; }
 
         public DbSet<Opencare.Data.ApplicationUser> ApplicationUsers { get; set; }
+
+        public DbSet<Opencare.Models.Group> Group { get; set; }
     }
 }
