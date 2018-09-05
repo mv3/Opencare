@@ -45,6 +45,19 @@ namespace Opencare.Pages.Users
             [Display(Name = "Email")]
             public string Email { get; set; }
 
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
+
+            [Display(Name = "Is Teacher")]
+            public bool IsTeacher { get; set; }
+
+            [Display(Name = "Is Administrator")]
+            public bool IsAdmin { get; set; }
+
+            [Display(Name = "Is Parent")]
+            public bool IsParent { get; set; }
+
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
             [DataType(DataType.Password)]
@@ -76,7 +89,57 @@ namespace Opencare.Pages.Users
                 };
                 var result = await UserManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
-                {                    
+                {
+                    // Add user roles
+                    user = await UserManager.FindByEmailAsync(Input.Email);
+
+                    if (Input.IsTeacher)
+                    {
+                        if (!await UserManager.IsInRoleAsync(user, "Teachers"))
+                        {
+                            await UserManager.AddToRoleAsync(user, "Teachers");
+                        }
+                    }
+                    else
+                    {
+                        if (await UserManager.IsInRoleAsync(user, "Teachers"))
+                        {
+                            await UserManager.RemoveFromRoleAsync(user, "Teachers");
+                        }
+                    }
+
+                    if (Input.IsAdmin)
+                    {
+                        if (!await UserManager.IsInRoleAsync(user, "Administrators"))
+                        {
+                            await UserManager.AddToRoleAsync(user, "Administrators");
+                        }
+                    }
+                    else
+                    {
+                        if (await UserManager.IsInRoleAsync(user, "Administrators"))
+                        {
+                            await UserManager.RemoveFromRoleAsync(user, "Administrators");
+                        }
+                    }
+
+                    if (Input.IsParent)
+                    {
+                        if (!await UserManager.IsInRoleAsync(user, "Parents"))
+                        {
+                            await UserManager.AddToRoleAsync(user, "Parents");
+                        }
+                    }
+                    else
+                    {
+                        if (await UserManager.IsInRoleAsync(user, "Parents"))
+                        {
+                            await UserManager.RemoveFromRoleAsync(user, "Parents");
+                        }
+                    }
+
+
+
                     return RedirectToPage("./Index");
                 }
                 foreach (var error in result.Errors)
@@ -88,7 +151,5 @@ namespace Opencare.Pages.Users
             // If we got this far, something failed, redisplay form
             return Page();
         }
-
-
     }
 }

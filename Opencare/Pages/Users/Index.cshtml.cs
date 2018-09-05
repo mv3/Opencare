@@ -19,13 +19,16 @@ namespace Opencare.Pages.Users
         : base(context, authorizationService, userManager)
         {
         }
+        
+        public IList<ApplicationUser> Administrators { get; set; }
+        public IList<ApplicationUser> Teachers { get; set; }
+        public IList<ApplicationUser> Parents { get; set; }
 
-        public IList<ApplicationUser> Users { get; set; }
-
-        public void OnGet()
+        public async Task OnGetAsync()
         {
-            var users = Context.ApplicationUsers;
-            Users = users.ToList();
+            Administrators = await UserManager.GetUsersInRoleAsync("Administrators");
+            Teachers = await UserManager.GetUsersInRoleAsync("Teachers");
+            Parents = await UserManager.GetUsersInRoleAsync("Parents");
         }
     }
 }

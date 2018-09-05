@@ -59,6 +59,12 @@ namespace Opencare.Pages.Users
 
             [Display(Name = "Is Teacher")]
             public bool IsTeacher { get; set; }
+            
+            [Display(Name = "Is Administrator")]
+            public bool IsAdmin { get; set; }
+
+            [Display(Name = "Is Parent")]
+            public bool IsParent { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync(string id)
@@ -73,6 +79,8 @@ namespace Opencare.Pages.Users
             var email = await UserManager.GetEmailAsync(user);
             var phoneNumber = await UserManager.GetPhoneNumberAsync(user);
             var isTeacher = await UserManager.IsInRoleAsync(user, "Teachers");
+            var isAdmin = await UserManager.IsInRoleAsync(user, "Administrators");
+            var isParent = await UserManager.IsInRoleAsync(user, "Parents");
 
             Username = userName;
 
@@ -82,7 +90,9 @@ namespace Opencare.Pages.Users
                 LastName = user.LastName,
                 Email = email,
                 PhoneNumber =  phoneNumber,
-                IsTeacher = isTeacher
+                IsTeacher = isTeacher,
+                IsAdmin = isAdmin,
+                IsParent = isParent
             };
 
             return Page();
@@ -137,7 +147,47 @@ namespace Opencare.Pages.Users
 
             if (Input.IsTeacher)
             {
-                await UserManager.AddToRoleAsync(user, "Teachers");
+                if (!await UserManager.IsInRoleAsync(user, "Teachers"))
+                {
+                    await UserManager.AddToRoleAsync(user, "Teachers");
+                }
+            }
+            else
+            {
+                if (await UserManager.IsInRoleAsync(user, "Teachers"))
+                {
+                    await UserManager.RemoveFromRoleAsync(user, "Teachers");
+                }
+            }
+
+            if (Input.IsAdmin)
+            {
+                if (!await UserManager.IsInRoleAsync(user, "Administrators"))
+                {
+                    await UserManager.AddToRoleAsync(user, "Teachers");
+                }
+            }
+            else
+            {
+                if (await UserManager.IsInRoleAsync(user, "Administrators"))
+                {
+                    await UserManager.RemoveFromRoleAsync(user, "Administrators");
+                }
+            }
+
+            if (Input.IsParent)
+            {
+                if (!await UserManager.IsInRoleAsync(user, "Parents"))
+                {
+                    await UserManager.AddToRoleAsync(user, "Parents");
+                }
+            }
+            else
+            {
+                if (await UserManager.IsInRoleAsync(user, "Parents"))
+                {
+                    await UserManager.RemoveFromRoleAsync(user, "Parents");
+                }
             }
 
             StatusMessage = "Your profile has been updated";

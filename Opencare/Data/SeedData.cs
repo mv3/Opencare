@@ -29,8 +29,8 @@ namespace Opencare.Data
                 await EnsureRole(serviceProvider, teacherID, Constants.TeachersRole);
 
                 // allowed user can create and edit contacts that they create
-                //var parentID = await EnsureUser(serviceProvider, testUserPw, "parent@o.com", "Guy", "A");
-               // await EnsureRole(serviceProvider, teacherID, Constants.TeachersRole);
+                var parentID = await EnsureUser(serviceProvider, testUserPw, "parent@o.com", "Guy", "A");
+                await EnsureRole(serviceProvider, parentID, Constants.ParentsRole);
 
                 SeedDB(context, adminID);
             }
