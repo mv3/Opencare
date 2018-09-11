@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Opencare.Authorization;
 using Opencare.Data;
 using Opencare.Models;
@@ -14,8 +15,7 @@ using Opencare.Models;
 namespace Opencare.Pages.Students
 {
     public class CreateModel : DI_BasePageModel
-    {
-        private readonly Opencare.Data.ApplicationDbContext _context;
+    {       
 
         public CreateModel(
             ApplicationDbContext context,
@@ -34,6 +34,7 @@ namespace Opencare.Pages.Students
         [BindProperty]
         public Student Student { get; set; }
 
+
         public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
@@ -43,6 +44,15 @@ namespace Opencare.Pages.Students
 
             Student.ParentID = UserManager.GetUserId(User);
             Student.Status = EnrollmentStatus.Pending;
+
+            if(Context.Group.Any(g=>g.Name == "Unassigned"))
+            {
+                Student.Group = Context.Group.SingleOrDefault(g => g.Name == "Unassigned");
+            }
+            else
+            {
+                Student.Group = new Group { Name = "Unassigned" };
+            }
 
             // requires using ContactManager.Authorization;
             var isAuthorized = await AuthorizationService.AuthorizeAsync(

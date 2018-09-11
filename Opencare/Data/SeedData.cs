@@ -129,6 +129,12 @@ namespace Opencare.Data
                 TeacherId = teachers[2]
             };
 
+            context.Group.Add(new Group
+            {
+                Name = "Unassigned"
+            }
+            );
+
             context.Student.AddRange(
                 new Student
                 {

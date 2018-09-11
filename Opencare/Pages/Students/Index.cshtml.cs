@@ -31,11 +31,11 @@ namespace Opencare.Pages.Students
 
             var currentUserId = UserManager.GetUserId(User);
 
-            if (User.IsInRole("Teachers"))
+            if (User.IsInRole(Constants.TeachersRole))
             {
                 students = students.Where(s => s.Group.TeacherId == currentUserId);
             }
-            else if(User.IsInRole("Parents"))
+            else if(!User.IsInRole(Constants.AdministratorsRole))
             {
                 students = students.Where(c => c.ParentID == currentUserId);
             }
