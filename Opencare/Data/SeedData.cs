@@ -103,33 +103,31 @@ namespace Opencare.Data
             {
                 return;   // DB has been seeded
             }
-
-            context.Group.AddRange(
-                new Group
-                {
-                    Name = "Infants",
-                    Room = "1",
-                    MinAge = 0,
-                    MaxAge = 1,
-                    TeacherId = teachers[0]
-                },
-                new Group
-                {
-                    Name = "Toddlers",
-                    Room = "2",
-                    MinAge = 1,
-                    MaxAge = 2,
-                    TeacherId = teachers[1]
-                },
-                new Group
-                {
-                    Name = "Preschool",
-                    Room = "3",
-                    MinAge = 3,
-                    MaxAge = 4,
-                    TeacherId = teachers[2]
-                }
-                );
+            
+            var group1 = new Group
+            {
+                Name = "Infants",
+                Room = "1",
+                MinAge = 0,
+                MaxAge = 1,
+                TeacherId = teachers[0]
+            };
+            var group2 = new Group
+            {
+                Name = "Toddlers",
+                Room = "2",
+                MinAge = 1,
+                MaxAge = 2,
+                TeacherId = teachers[1]
+            };
+            var group3 = new Group
+            {
+                Name = "Preschool",
+                Room = "3",
+                MinAge = 3,
+                MaxAge = 4,
+                TeacherId = teachers[2]
+            };
 
             context.Student.AddRange(
                 new Student
@@ -138,7 +136,8 @@ namespace Opencare.Data
                     LastName = "Garcia",
                     Birthdate = new DateTime(2016, 05, 05),
                     Status = EnrollmentStatus.Pending,
-                    ParentID = parents[0]
+                    ParentID = parents[0],
+                    Group = group1
                 },
                 new Student
                 {
@@ -146,7 +145,8 @@ namespace Opencare.Data
                     LastName = "Orton",
                     Birthdate = new DateTime(2017, 05, 05),
                     Status=EnrollmentStatus.Pending,
-                    ParentID = parents[0]
+                    ParentID = parents[0],
+                    Group = group2
                 },
                 new Student
                 {
@@ -154,7 +154,8 @@ namespace Opencare.Data
                     LastName = "Alexieva-Bosseva",
                     Birthdate = new DateTime(2018, 05, 05),
                     Status=EnrollmentStatus.Pending,
-                    ParentID = parents[0]
+                    ParentID = parents[0],
+                    Group = group3
                 },
                 new Student
                 {
@@ -162,7 +163,8 @@ namespace Opencare.Data
                     LastName = "Kidd",
                     Birthdate = new DateTime(2017, 05, 05),
                     Status = EnrollmentStatus.Pending,
-                    ParentID = parents[1]
+                    ParentID = parents[1],
+                    Group = group1
                 },
                 new Student
                 {
@@ -170,7 +172,17 @@ namespace Opencare.Data
                     LastName = "Kidd",
                     Birthdate = new DateTime(2018, 05, 05),
                     Status = EnrollmentStatus.Pending,
-                    ParentID = parents[1]
+                    ParentID = parents[1],
+                    Group = group2
+                },
+                new Student
+                {
+                    FirstName = "Dan",
+                    LastName = "Kidd",
+                    Birthdate = new DateTime(2018, 05, 05),
+                    Status = EnrollmentStatus.Pending,
+                    ParentID = parents[1],
+                    Group = group3
                 }
             );
             context.SaveChanges();

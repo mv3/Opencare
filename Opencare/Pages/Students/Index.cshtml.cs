@@ -33,8 +33,7 @@ namespace Opencare.Pages.Students
 
             if (User.IsInRole("Teachers"))
             {
-
-                //students = students.Where(c => c.TeacherId == currentUserId);
+                students = students.Where(s => s.Group.TeacherId == currentUserId);
             }
             else if(User.IsInRole("Parents"))
             {
