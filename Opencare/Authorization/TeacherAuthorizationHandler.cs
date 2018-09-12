@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Opencare.Authorization
 {
-    public class StudentTeacherAuthorizationHandler :
+    public class TeacherAuthorizationHandler :
         AuthorizationHandler<OperationAuthorizationRequirement, Student>
     {
         protected override Task
@@ -23,8 +23,7 @@ namespace Opencare.Authorization
             }
 
             // If not asking for approval/reject, return.
-            if (requirement.Name != Constants.ApproveOperationName &&
-                requirement.Name != Constants.RejectOperationName)
+            if (requirement.Name != Constants.ReadOperationName)
             {
                 return Task.CompletedTask;
             }

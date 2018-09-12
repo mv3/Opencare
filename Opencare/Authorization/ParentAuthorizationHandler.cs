@@ -10,11 +10,11 @@ using Opencare.Data;
 
 namespace Opencare.Authorization
 {
-    public class StudentIsParentAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, Student>
+    public class ParentAuthorizationHandler : AuthorizationHandler<OperationAuthorizationRequirement, Student>
     {
         UserManager<ApplicationUser> _userManager;
 
-        public StudentIsParentAuthorizationHandler(UserManager<ApplicationUser>
+        public ParentAuthorizationHandler(UserManager<ApplicationUser>
             userManager)
         {
             _userManager = userManager;
@@ -36,8 +36,7 @@ namespace Opencare.Authorization
 
             if (requirement.Name != Constants.CreateOperationName &&
                 requirement.Name != Constants.ReadOperationName &&
-                requirement.Name != Constants.UpdateOperationName &&
-                requirement.Name != Constants.DeleteOperationName)
+                requirement.Name != Constants.UpdateOperationName)
             {
                 return Task.CompletedTask;
             }

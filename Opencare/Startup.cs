@@ -61,13 +61,13 @@ namespace Opencare
 
             // Authorization handlers.
             services.AddScoped<IAuthorizationHandler,
-                                  StudentIsParentAuthorizationHandler>();
+                                  ParentAuthorizationHandler>();
 
             services.AddSingleton<IAuthorizationHandler,
                                   AdministratorAuthorizationHandler>();
 
             services.AddSingleton<IAuthorizationHandler,
-                                  StudentTeacherAuthorizationHandler>();
+                                  TeacherAuthorizationHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
