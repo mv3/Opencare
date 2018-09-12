@@ -10,59 +10,145 @@
 <p>
     <a asp-page="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Student[0].FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Student[0].LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Student[0].Birthdate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Student[0].Status)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Student) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Birthdate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @if ((await AuthorizationService.AuthorizeAsync(
-                   User, item,
-                   StudentOperations.Update)).Succeeded)
-                {
-                    <a asp-page="./Edit" asp-route-id="@item.StudentId">Edit</a>
-                    <text> | </text>
-                }
+@if (User.IsInRole(Constants.TeachersRole) || User.IsInRole(Constants.AdministratorsRole))
+{
+    <h4>Students</h4>
 
-                <a asp-page="./Details" asp-route-id="@item.StudentId">Details</a>
-
-                @if ((await AuthorizationService.AuthorizeAsync(
-               User, item,
-               StudentOperations.Delete)).Succeeded)
+    @foreach (var group in Model.Groups)
+    {
+        <h5>@group.Name</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Student[0].FirstName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Student[0].LastName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Student[0].Birthdate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Student[0].Status)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Student)
                 {
-                    <text> | </text>
-                    <a asp-page="./Delete" asp-route-id="@item.StudentId">Delete</a>
+                    @if (item.Group == group)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Birthdate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            <td>
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                             User, item,
+                             StudentOperations.Update)).Succeeded)
+                                {
+                                    <a asp-page="./Edit" asp-route-id="@item.StudentId">Edit</a>
+                                    <text> | </text>
+                                }
+
+                                <a asp-page="./Details" asp-route-id="@item.StudentId">Details</a>
+
+                                @if ((await AuthorizationService.AuthorizeAsync(
+                         User, item,
+                         StudentOperations.Delete)).Succeeded)
+                                {
+                                    <text> | </text>
+                                    <a asp-page="./Delete" asp-route-id="@item.StudentId">Delete</a>
+                                }
+                            </td>
+                        </tr>
+
+                    }
+
                 }
-            </td>
-        </tr>
+            </tbody>
+        </table>
+
+    }
 }
-    </tbody>
-</table>
+
+
+@if (User.IsInRole(Constants.ParentsRole))
+{
+    <h4>Children</h4>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Children[0].FirstName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Children[0].LastName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Children[0].Birthdate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Children[0].Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Children[0].Group.Name)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Children)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthdate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Group.Name)
+                </td>
+                <td>
+                    @if ((await AuthorizationService.AuthorizeAsync(
+                 User, item,
+                 StudentOperations.Update)).Succeeded)
+                    {
+                        <a asp-page="./Edit" asp-route-id="@item.StudentId">Edit</a>
+                        <text> | </text>
+                    }
+
+                    <a asp-page="./Details" asp-route-id="@item.StudentId">Details</a>
+
+                    @if ((await AuthorizationService.AuthorizeAsync(
+             User, item,
+             StudentOperations.Delete)).Succeeded)
+                    {
+                        <text> | </text>
+                        <a asp-page="./Delete" asp-route-id="@item.StudentId">Delete</a>
+                    }
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+
+}

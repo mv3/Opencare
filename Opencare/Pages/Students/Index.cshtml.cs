@@ -23,24 +23,33 @@ namespace Opencare.Pages.Students
         }
 
         public IList<Student> Student { get;set; }
+        public IList<Student> Children { get; set; }
+        public IList<Group> Groups { get; set; }
+
+        public bool IsTeacher { get; set; }       
 
         public async Task OnGetAsync()
         {
-            var students = from c in Context.Student
-                           select c;
-
             var currentUserId = UserManager.GetUserId(User);
+
+            var currUser = await UserManager.GetUserAsync(User);
+
 
             if (User.IsInRole(Constants.TeachersRole))
             {
-                students = students.Where(s => s.Group.TeacherId == currentUserId);
+                Student = await Context.Student.Where(s => s.Group.TeacherId == currentUserId).ToListAsync();
+                Groups = await Context.Group.Where(g => g.TeacherId == currentUserId).ToListAsync();
             }
-            else if(!User.IsInRole(Constants.AdministratorsRole))
+            else if(User.IsInRole(Constants.AdministratorsRole))
             {
-                students = students.Where(c => c.ParentID == currentUserId);
+                Student = await Context.Student.ToListAsync();
+                Groups = await Context.Group.ToListAsync();
             }
 
-            Student = await students.ToListAsync();
+            if (User.IsInRole(Constants.ParentsRole))
+            {
+                Children = await Context.Student.Where(s => s.ParentID == currentUserId).Include(s => s.Group).ToListAsync();
+            }
         }
     }
 }
