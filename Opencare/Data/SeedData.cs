@@ -64,7 +64,9 @@ namespace Opencare.Data
                 {
                     UserName = UserName,
                     FirstName = FirstName,
-                    LastName = LastName
+                    LastName = LastName,
+                    PIN = "0000",
+                    Email = UserName
                 };
                 await userManager.CreateAsync(user, testUserPw);
             }

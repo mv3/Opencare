@@ -57,6 +57,11 @@ namespace Opencare.Pages.Users
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
+            [Required]
+            [RegularExpression(@"^(\d{4})$", ErrorMessage = "Enter a valid 4 digit PIN")]
+            [Display(Name = "PIN")]
+            public string PIN { get; set; }
+
             [Display(Name = "Is Teacher")]
             public bool IsTeacher { get; set; }
             
@@ -92,7 +97,8 @@ namespace Opencare.Pages.Users
                 PhoneNumber =  phoneNumber,
                 IsTeacher = isTeacher,
                 IsAdmin = isAdmin,
-                IsParent = isParent
+                IsParent = isParent,
+                PIN = user.PIN              
             };
 
             return Page();
@@ -141,6 +147,11 @@ namespace Opencare.Pages.Users
                     var userId = await UserManager.GetUserIdAsync(user);
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
+            }
+
+            if (Input.PIN != user.PIN)
+            {
+                user.PIN = Input.PIN;
             }
 
             await UserManager.UpdateAsync(user);
