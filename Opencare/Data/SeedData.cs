@@ -24,6 +24,8 @@ namespace Opencare.Data
 
                 var adminID = await EnsureUser(serviceProvider, testUserPw, "admin@o.com", "Admin", "Admin");
                 await EnsureRole(serviceProvider, adminID, Constants.AdministratorsRole);
+                var signInID = await EnsureUser(serviceProvider, testUserPw, "signin@o.com", "SignIn", "SignIn");
+                await EnsureRole(serviceProvider, signInID, Constants.SignInRole);
 
                 List<string> teachers = new List<string>();
                 List<string> parents = new List<string>();
