@@ -36,5 +36,6 @@ namespace Opencare.Authorization
         public static readonly string TeachersRole = "Teachers";
         public static readonly string ParentsRole = "Parents";
         public static readonly string AssignOperationName = "Assign";
+        public static readonly string SignInRole = "SignIn";
     }
 }

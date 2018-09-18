@@ -15,5 +15,8 @@ namespace Opencare.Data
         [PersonalData]
         [Display(Name = "Last name")]
         public string LastName { get; set; }
+
+        public string PIN { get; set; }
+        
     }
 }

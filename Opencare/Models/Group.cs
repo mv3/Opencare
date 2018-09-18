@@ -9,6 +9,8 @@ namespace Opencare.Models
     public class Group
     {
         public int Id { get; set; }
+
+        [Display(Name = "Group Name")]
         public string Name { get; set; }
         public string Room { get; set; }
 

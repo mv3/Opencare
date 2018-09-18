@@ -68,6 +68,11 @@ namespace Opencare.Pages.Users
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [RegularExpression(@"^(\d{4})$", ErrorMessage = "Enter a valid 4 digit PIN")]
+            [Display(Name = "PIN")]
+            public string PIN { get; set; }
         }
 
         public IActionResult OnGet()
@@ -85,7 +90,8 @@ namespace Opencare.Pages.Users
                     UserName = Input.Email,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
-                    LastName = Input.LastName
+                    LastName = Input.LastName,
+                    PIN = Input.PIN
                 };
                 var result = await UserManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

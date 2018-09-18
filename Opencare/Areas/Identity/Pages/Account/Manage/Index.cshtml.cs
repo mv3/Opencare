@@ -57,6 +57,11 @@ namespace Opencare.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Required]
+            [RegularExpression(@"^(\d{4})$", ErrorMessage = "Enter a valid 4 digit PIN")]
+            [Display(Name = "PIN")]
+            public string PIN { get; set; }
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -78,7 +83,8 @@ namespace Opencare.Areas.Identity.Pages.Account.Manage
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = email,
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                PIN = user.PIN
             };
 
             IsEmailConfirmed = await _userManager.IsEmailConfirmedAsync(user);
@@ -129,6 +135,11 @@ namespace Opencare.Areas.Identity.Pages.Account.Manage
                     var userId = await _userManager.GetUserIdAsync(user);
                     throw new InvalidOperationException($"Unexpected error occurred setting phone number for user with ID '{userId}'.");
                 }
+            }
+
+            if (Input.PIN != user.PIN)
+            {
+                user.PIN = Input.PIN;
             }
 
             await _userManager.UpdateAsync(user);
