@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -8,17 +9,16 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Opencare.Data;
-using Opencare.Models;
 
-namespace Opencare.Pages.SignIn
+namespace Opencare.Pages.PINSignIn
 {
-    public class WelcomeModel : PageModel
+    public class IndexModel : PageModel
     {
         protected ApplicationDbContext Context { get; }
         protected IAuthorizationService AuthorizationService { get; }
         protected UserManager<ApplicationUser> UserManager { get; }
 
-        public WelcomeModel(
+        public IndexModel(
            ApplicationDbContext context,
            IAuthorizationService authorizationService,
            UserManager<ApplicationUser> userManager) : base()
@@ -28,13 +28,20 @@ namespace Opencare.Pages.SignIn
             AuthorizationService = authorizationService;
         }
 
-        public IList<Student> Students { get; set; }
+        public IList<ApplicationUser> Parents { get; set; }
+        public ApplicationUser SignInUser { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(string id)
+        public async Task OnGetAsync(string search = null)
         {
-            Students = await Context.Student.Where(s => s.ParentID == id).ToListAsync();
+            Parents = await UserManager.GetUsersInRoleAsync("Parents");
 
-            return Page();
+            if (search != null)
+            {
+                Parents = Parents.Where(u => u.FirstName.ToLower().Contains(search.ToLower())
+                    || u.LastName.ToLower().Contains(search.ToLower())).ToList();
+            }
         }
+
+        
     }
 }
