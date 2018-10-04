@@ -14,7 +14,7 @@ namespace Opencare.Pages.Users
 {
     public class CreateModel : DI_BasePageModel
     {
-        private readonly Opencare.Data.ApplicationDbContext _context;
+        //private readonly Opencare.Data.ApplicationDbContext _context;
 
         public CreateModel(
             ApplicationDbContext context,

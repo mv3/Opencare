@@ -147,7 +147,9 @@ namespace Opencare.Data
                     Birthdate = new DateTime(2016, 05, 05),
                     Status = EnrollmentStatus.Pending,
                     ParentID = parents[0],
-                    Group = group1
+                    Group = group1,
+                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
+                    IsSignedIn = false
                 },
                 new Student
                 {
@@ -156,7 +158,9 @@ namespace Opencare.Data
                     Birthdate = new DateTime(2017, 05, 05),
                     Status=EnrollmentStatus.Pending,
                     ParentID = parents[0],
-                    Group = group2
+                    Group = group2,
+                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
+                    IsSignedIn = false
                 },
                 new Student
                 {
@@ -165,7 +169,9 @@ namespace Opencare.Data
                     Birthdate = new DateTime(2018, 05, 05),
                     Status=EnrollmentStatus.Pending,
                     ParentID = parents[0],
-                    Group = group3
+                    Group = group3,
+                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
+                    IsSignedIn = false
                 },
                 new Student
                 {
@@ -174,7 +180,9 @@ namespace Opencare.Data
                     Birthdate = new DateTime(2017, 05, 05),
                     Status = EnrollmentStatus.Pending,
                     ParentID = parents[1],
-                    Group = group1
+                    Group = group1,
+                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
+                    IsSignedIn = false
                 },
                 new Student
                 {
@@ -183,7 +191,9 @@ namespace Opencare.Data
                     Birthdate = new DateTime(2018, 05, 05),
                     Status = EnrollmentStatus.Pending,
                     ParentID = parents[1],
-                    Group = group2
+                    Group = group2,
+                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
+                    IsSignedIn = false
                 },
                 new Student
                 {
@@ -192,7 +202,9 @@ namespace Opencare.Data
                     Birthdate = new DateTime(2018, 05, 05),
                     Status = EnrollmentStatus.Pending,
                     ParentID = parents[1],
-                    Group = group3
+                    Group = group3,
+                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
+                    IsSignedIn = false
                 }
             );
             context.SaveChanges();

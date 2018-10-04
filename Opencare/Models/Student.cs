@@ -31,6 +31,10 @@ namespace Opencare.Models
         public int GroupId { get; set; }
 
         public Group Group { get; set; }
+
+        public bool IsSignedIn { get; set; }
+        
+        public ICollection<SignIn> SignIns { get; set; }
     }
 
     public enum EnrollmentStatus

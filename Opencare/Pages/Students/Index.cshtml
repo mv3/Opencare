@@ -105,6 +105,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Children[0].Group.Name)
                 </th>
+                <th>
+                    Sign in
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -128,9 +131,18 @@
                     @Html.DisplayFor(modelItem => item.Group.Name)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.IsSignedIn)
+                    <a asp-page="./Index" asp-page-handler="SignIn" asp-route-id="@item.StudentId">
+                        @if (item.IsSignedIn)
+                        {<text> Sign-out </text>}
+                    else
+                    { <text> Sign-in </text>}
+                    </a>
+                </td>
+                <td>
                     @if ((await AuthorizationService.AuthorizeAsync(
-                 User, item,
-                 StudentOperations.Update)).Succeeded)
+                User, item,
+                StudentOperations.Update)).Succeeded)
                     {
                         <a asp-page="./Edit" asp-route-id="@item.StudentId">Edit</a>
                         <text> | </text>
@@ -139,8 +151,8 @@
                     <a asp-page="./Details" asp-route-id="@item.StudentId">Details</a>
 
                     @if ((await AuthorizationService.AuthorizeAsync(
-             User, item,
-             StudentOperations.Delete)).Succeeded)
+            User, item,
+            StudentOperations.Delete)).Succeeded)
                     {
                         <text> | </text>
                         <a asp-page="./Delete" asp-route-id="@item.StudentId">Delete</a>
