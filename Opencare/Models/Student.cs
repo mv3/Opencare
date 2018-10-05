@@ -32,9 +32,12 @@ namespace Opencare.Models
 
         public Group Group { get; set; }
 
+        [Display(Name = "Signed In")]
         public bool IsSignedIn { get; set; }
-        
+                
         public ICollection<SignIn> SignIns { get; set; }
+
+        public bool Deleted { get; set; }
     }
 
     public enum EnrollmentStatus

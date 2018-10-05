@@ -35,19 +35,19 @@ namespace Opencare.Pages.Students
 
             if (User.IsInRole(Constants.TeachersRole))
             {
-                Student = await Context.Student.Where(s => s.Group.TeacherId == currentUserId).ToListAsync();
+                Student = await Context.Student.Where(s => s.Group.TeacherId == currentUserId && s.Deleted == false).ToListAsync();
                 Groups = await Context.Group.Where(g => g.TeacherId == currentUserId).ToListAsync();
             }
             else if(User.IsInRole(Constants.AdministratorsRole))
             {
-                Student = await Context.Student.ToListAsync();
+                Student = await Context.Student.Where(s => s.Deleted == false).ToListAsync();
                 Groups = await Context.Group.ToListAsync();
             }
 
             if (User.IsInRole(Constants.ParentsRole))
             {
                 Children = await Context.Student
-                    .Where(s => s.ParentID == currentUserId)
+                    .Where(s => s.ParentID == currentUserId && s.Deleted == false)
                     .Include(s => s.Group)
                     .ToListAsync();             
             }
@@ -71,7 +71,7 @@ namespace Opencare.Pages.Students
 
             var currentUserId = UserManager.GetUserId(User);
             Children = await Context.Student
-                    .Where(s => s.ParentID == currentUserId)
+                    .Where(s => s.ParentID == currentUserId && s.Deleted == false)
                     .Include(s => s.Group)
                     .ToListAsync();
         }

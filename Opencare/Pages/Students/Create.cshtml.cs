@@ -63,7 +63,7 @@ namespace Opencare.Pages.Students
                 return new ChallengeResult();
             }
 
-            Student.SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } };
+            //Student.SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } };
 
             Context.Student.Add(Student);
             await Context.SaveChangesAsync();

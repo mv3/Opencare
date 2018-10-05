@@ -27,7 +27,7 @@ namespace Opencare.Pages.Students
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
-            Student = await Context.Student.FirstOrDefaultAsync(m => m.StudentId == id);
+            Student = await Context.Student.Include(s=>s.SignIns).FirstOrDefaultAsync(m => m.StudentId == id);
 
             if (Student == null)
             {
@@ -48,7 +48,7 @@ namespace Opencare.Pages.Students
         public async Task<IActionResult> OnPostAsync(int id)
         {
             Student = await Context.Student.FindAsync(id);
-
+            
             var student = await Context
              .Student.AsNoTracking()
              .FirstOrDefaultAsync(m => m.StudentId == id);
@@ -66,7 +66,8 @@ namespace Opencare.Pages.Students
                 return new ChallengeResult();
             }
 
-            Context.Student.Remove(Student);
+            Student.Deleted = true;
+
             await Context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
