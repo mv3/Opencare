@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Opencare.Authorization;
 using Opencare.Data;
 using Opencare.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace Opencare.Pages.Students
 {
@@ -24,15 +25,20 @@ namespace Opencare.Pages.Students
 
         public Student Student { get; set; }
 
+        [Display(Name = "Parent")]
+        public string ParentName { get; set; }
+
         public async Task<IActionResult> OnGetAsync(int id)
         {
 
-            Student = await Context.Student.FirstOrDefaultAsync(m => m.StudentId == id);
+            Student = await Context.Student.Include(s=>s.Parent).FirstOrDefaultAsync(m => m.StudentId == id);
 
             if (Student == null)
             {
                 return NotFound();
             }
+
+            ParentName = Student.Parent.FirstName + " " + Student.Parent.LastName;
 
             var isAuthorized = User.IsInRole(Constants.TeachersRole) ||
                            User.IsInRole(Constants.AdministratorsRole);

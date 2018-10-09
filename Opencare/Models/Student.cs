@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Opencare.Data;
 
 namespace Opencare.Models
 {
@@ -23,6 +24,8 @@ namespace Opencare.Models
 
         // User ID From AspNetUsers table.
         public string ParentID { get; set; }
+        public ApplicationUser Parent { get; set; }
+
 
         //[Display(Name = "Teacher")]
         //public string TeacherId { get; set; }

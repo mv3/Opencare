@@ -35,6 +35,12 @@
         <dd>
             @Html.DisplayFor(model => model.Student.Status)
         </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.ParentName)
+        </dt>
+        <dd>         
+            <a asp-page="/Users/Details" asp-route-id="@Model.Student.ParentID">@Html.DisplayFor(model => model.ParentName)</a>            
+        </dd>
     </dl>
 </div>
 @if (Model.Student.Status != EnrollmentStatus.Enrolled)

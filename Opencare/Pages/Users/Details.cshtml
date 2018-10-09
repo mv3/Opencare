@@ -54,6 +54,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Children[0].Status)
             </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -71,6 +72,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-page="/Students/Details" asp-route-id="@item.StudentId">Details</a>  
                 </td>
             </tr>
         }
