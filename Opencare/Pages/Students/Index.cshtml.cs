@@ -56,7 +56,6 @@ namespace Opencare.Pages.Students
         public async Task OnGetSignIn(int id)
         {
             var student = await Context.Student.Where(s => s.StudentId == id).FirstOrDefaultAsync();
-            var signIn = new Models.SignIn { IsSignedIn = true, Time = DateTime.Now, Student = student };
             if (student.IsSignedIn)
             {
                 student.IsSignedIn = false;
@@ -65,6 +64,9 @@ namespace Opencare.Pages.Students
             {
                 student.IsSignedIn = true;
             }
+
+
+            var signIn = new SignIn { IsSignedIn = student.IsSignedIn, Time = DateTime.Now, Student = student };
 
             await Context.SignIns.AddAsync(signIn);
             await Context.SaveChangesAsync();

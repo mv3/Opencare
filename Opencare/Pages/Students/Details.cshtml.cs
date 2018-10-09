@@ -11,6 +11,8 @@ using Opencare.Authorization;
 using Opencare.Data;
 using Opencare.Models;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
+using System.IO;
 
 namespace Opencare.Pages.Students
 {
@@ -31,7 +33,10 @@ namespace Opencare.Pages.Students
         public async Task<IActionResult> OnGetAsync(int id)
         {
 
-            Student = await Context.Student.Include(s=>s.Parent).FirstOrDefaultAsync(m => m.StudentId == id);
+            Student = await Context.Student
+                .Include(s=>s.Parent)
+                .Include(s=>s.SignIns)
+                .FirstOrDefaultAsync(m => m.StudentId == id);
 
             if (Student == null)
             {

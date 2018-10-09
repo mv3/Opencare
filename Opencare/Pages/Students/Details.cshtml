@@ -38,15 +38,15 @@
         <dt>
             @Html.DisplayNameFor(model => model.ParentName)
         </dt>
-        <dd>         
-            <a asp-page="/Users/Details" asp-route-id="@Model.Student.ParentID">@Html.DisplayFor(model => model.ParentName)</a>            
+        <dd>
+            <a asp-page="/Users/Details" asp-route-id="@Model.Student.ParentID">@Html.DisplayFor(model => model.ParentName)</a>
         </dd>
     </dl>
 </div>
 @if (Model.Student.Status != EnrollmentStatus.Enrolled)
 {
     @if ((await AuthorizationService.AuthorizeAsync(
-    User, Model.Student, StudentOperations.Approve)).Succeeded)
+   User, Model.Student, StudentOperations.Approve)).Succeeded)
     {
         <form style="display:inline;" method="post">
             <input type="hidden" name="id" value="@Model.Student.StudentId" />
@@ -59,7 +59,7 @@
 @if (Model.Student.Status != EnrollmentStatus.NotEnrolled)
 {
     @if ((await AuthorizationService.AuthorizeAsync(
-    User, Model.Student, StudentOperations.Reject)).Succeeded)
+   User, Model.Student, StudentOperations.Reject)).Succeeded)
     {
         <form style="display:inline;" method="post">
             <input type="hidden" name="id" value="@Model.Student.StudentId" />
@@ -71,11 +71,52 @@
 
 <div>
     @if ((await AuthorizationService.AuthorizeAsync(
-        User, Model.Student,
-        StudentOperations.Update)).Succeeded)
+       User, Model.Student,
+       StudentOperations.Update)).Succeeded)
     {
         <a asp-page="./Edit" asp-route-id="@Model.Student.StudentId">Edit</a>
         <text> | </text>
     }
     <a asp-page="./Index">Back to List</a>
 </div>
+
+<form method="post" enctype="multipart/form-data" asp-controller="UploadFiles" asp-action="Index">
+    <div class="form-group">
+        <div class="col-md-10">
+            <p>Upload one or more files using this form:</p>
+            <input type="file" name="files" multiple />
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-10">
+            <input type="submit" value="Upload" />
+        </div>
+    </div>
+</form>
+
+
+<h4>Sign-in Log</h4>
+
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th></th>
+
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Student.SignIns.OrderByDescending(s=>s.Time))
+            {               
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Time)
+                        </td>
+                        <td>
+                            @(item.IsSignedIn ? "In" : "Out")
+                        </td>
+                    </tr>
+            }
+        </tbody>
+    </table>

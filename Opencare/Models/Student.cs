@@ -40,6 +40,8 @@ namespace Opencare.Models
                 
         public ICollection<SignIn> SignIns { get; set; }
 
+        //public ICollection<StudentDocument> Documents { get; set; }
+
         public bool Deleted { get; set; }
     }
 
