@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using Opencare.Data;
 
 namespace Opencare.Models
 {
@@ -14,17 +15,20 @@ namespace Opencare.Models
         [Required]
         [Display(Name = "Document Type")]
         public string DocumentType { get; set; }
-
-
-        //[Display(Name = "Document Size (bytes)")]
-        //[DisplayFormat(DataFormatString = "{0:N1}")]
-        //public long DocumentSize { get; set; }
-
+        
         [Display(Name = "Uploaded (UTC)")]
         [DisplayFormat(DataFormatString = "{0:F}")]
         public DateTime UploadDT { get; set; }
 
         [Required]
-        public IFormFile Document { get; set; }
+        public byte[] Document { get; set; }
+
+        public string FileName { get; set; }
+
+        public string ContentType { get; set; }
+
+        public ApplicationUser UploadUser { get; set; }
+
+        public Student Student { get; set; }
     }
 }

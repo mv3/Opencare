@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Opencare.Data;
 
-namespace Opencare.Data.Migrations
+namespace Opencare.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20180905152249_AddGroups")]
-    partial class AddGroups
+    [Migration("20181010183325_Add-document")]
+    partial class Adddocument
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -193,13 +193,38 @@ namespace Opencare.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<int>("MaxAge");
+
+                    b.Property<int>("MinAge");
+
                     b.Property<string>("Name");
 
                     b.Property<string>("Room");
 
+                    b.Property<string>("TeacherId");
+
                     b.HasKey("Id");
 
                     b.ToTable("Group");
+                });
+
+            modelBuilder.Entity("Opencare.Models.SignIn", b =>
+                {
+                    b.Property<int>("SignInId")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsSignedIn");
+
+                    b.Property<int?>("StudentId");
+
+                    b.Property<DateTime>("Time");
+
+                    b.HasKey("SignInId");
+
+                    b.HasIndex("StudentId");
+
+                    b.ToTable("SignIns");
                 });
 
             modelBuilder.Entity("Opencare.Models.Student", b =>
@@ -210,7 +235,13 @@ namespace Opencare.Data.Migrations
 
                     b.Property<DateTime>("Birthdate");
 
+                    b.Property<bool>("Deleted");
+
                     b.Property<string>("FirstName");
+
+                    b.Property<int>("GroupId");
+
+                    b.Property<bool>("IsSignedIn");
 
                     b.Property<string>("LastName");
 
@@ -218,11 +249,40 @@ namespace Opencare.Data.Migrations
 
                     b.Property<int>("Status");
 
-                    b.Property<string>("TeacherId");
-
                     b.HasKey("StudentId");
 
+                    b.HasIndex("GroupId");
+
+                    b.HasIndex("ParentID");
+
                     b.ToTable("Student");
+                });
+
+            modelBuilder.Entity("Opencare.Models.StudentDocument", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte[]>("Document")
+                        .IsRequired();
+
+                    b.Property<string>("DocumentType")
+                        .IsRequired();
+
+                    b.Property<int?>("StudentId");
+
+                    b.Property<DateTime>("UploadDT");
+
+                    b.Property<string>("UploadUserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StudentId");
+
+                    b.HasIndex("UploadUserId");
+
+                    b.ToTable("StudentDocuments");
                 });
 
             modelBuilder.Entity("Opencare.Data.ApplicationUser", b =>
@@ -232,6 +292,8 @@ namespace Opencare.Data.Migrations
                     b.Property<string>("FirstName");
 
                     b.Property<string>("LastName");
+
+                    b.Property<string>("PIN");
 
                     b.ToTable("ApplicationUser");
 
@@ -281,6 +343,36 @@ namespace Opencare.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Opencare.Models.SignIn", b =>
+                {
+                    b.HasOne("Opencare.Models.Student", "Student")
+                        .WithMany("SignIns")
+                        .HasForeignKey("StudentId");
+                });
+
+            modelBuilder.Entity("Opencare.Models.Student", b =>
+                {
+                    b.HasOne("Opencare.Models.Group", "Group")
+                        .WithMany("Students")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Opencare.Data.ApplicationUser", "Parent")
+                        .WithMany()
+                        .HasForeignKey("ParentID");
+                });
+
+            modelBuilder.Entity("Opencare.Models.StudentDocument", b =>
+                {
+                    b.HasOne("Opencare.Models.Student", "Student")
+                        .WithMany("Documents")
+                        .HasForeignKey("StudentId");
+
+                    b.HasOne("Opencare.Data.ApplicationUser", "UploadUser")
+                        .WithMany()
+                        .HasForeignKey("UploadUserId");
                 });
 #pragma warning restore 612, 618
         }

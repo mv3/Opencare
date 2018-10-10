@@ -25,23 +25,41 @@ namespace Opencare.Pages.Students
         {
         }
 
+        [BindProperty]
         public Student Student { get; set; }
 
+        [BindProperty]
         [Display(Name = "Parent")]
         public string ParentName { get; set; }
+
+        public class UploadDocument
+        {
+            [Required]
+            public string DocumentType { get; set; }
+
+            [Required]
+            public IFormFile Document { get; set; }
+        }
+
+        [BindProperty]
+        public UploadDocument StudentDocument { get; set; }
+
+        public List<StudentDocument> StudentDocs { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
 
             Student = await Context.Student
-                .Include(s=>s.Parent)
-                .Include(s=>s.SignIns)
+                .Include(s => s.Parent)
+                .Include(s => s.SignIns)
                 .FirstOrDefaultAsync(m => m.StudentId == id);
 
             if (Student == null)
             {
                 return NotFound();
             }
+
+            StudentDocs = await Context.StudentDocuments.Where(d => d.Student == Student).Include(d=>d.UploadUser).ToListAsync();
 
             ParentName = Student.Parent.FirstName + " " + Student.Parent.LastName;
 
@@ -82,9 +100,53 @@ namespace Opencare.Pages.Students
             }
             student.Status = status;
             Context.Student.Update(student);
+
+
+
             await Context.SaveChangesAsync();
 
             return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnPostNewDocAsync(int id )
+        {
+            if (ModelState.IsValid)
+            {
+                ApplicationUser UpUser = await UserManager.FindByIdAsync(UserManager.GetUserId(User));
+                var student = await Context.Student.FirstOrDefaultAsync(
+                                                      m => m.StudentId == id);
+                var ext = Path.GetExtension(StudentDocument.Document.FileName);
+                
+                var SD = new StudentDocument
+                {
+                    DocumentType = StudentDocument.DocumentType,
+                    UploadDT = DateTime.Now,
+                    UploadUser = UpUser,
+                    Student = student,
+                    FileName = student.FirstName + "_" + student.LastName + "-" + StudentDocument.DocumentType + "-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + ext,
+                    ContentType = StudentDocument.Document.ContentType
+            };
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    await StudentDocument.Document.CopyToAsync(memoryStream);
+                    SD.Document = memoryStream.ToArray();
+                }
+                
+
+                Context.Add(SD);
+                await Context.SaveChangesAsync();
+                return RedirectToPage("./Details", new { id });
+            }
+            return RedirectToPage("./Details", new { id });
+
+        }
+
+        public FileResult OnGetDownload(int id)
+        {
+            var doc = Context.StudentDocuments.Where(d => d.Id == id).Include(d => d.Student).FirstOrDefault();
+            return File(doc.Document, doc.ContentType, doc.FileName);
+            //System.Net.Mime.MediaTypeNames.Application.Octet
         }
     }
 }

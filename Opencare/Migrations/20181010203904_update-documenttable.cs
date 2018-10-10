@@ -1,31 +1,31 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace Opencare.Data.Migrations
+namespace Opencare.Migrations
 {
-    public partial class applicationUser3 : Migration
+    public partial class updatedocumenttable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "FirstName",
-                table: "AspNetUsers",
+                name: "ContentType",
+                table: "StudentDocuments",
                 nullable: true);
 
             migrationBuilder.AddColumn<string>(
-                name: "LastName",
-                table: "AspNetUsers",
+                name: "FileName",
+                table: "StudentDocuments",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "FirstName",
-                table: "AspNetUsers");
+                name: "ContentType",
+                table: "StudentDocuments");
 
             migrationBuilder.DropColumn(
-                name: "LastName",
-                table: "AspNetUsers");
+                name: "FileName",
+                table: "StudentDocuments");
         }
     }
 }
