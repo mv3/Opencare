@@ -20,15 +20,24 @@ namespace Opencare.Models
         [DataType(DataType.Date)]
         public DateTime Birthdate { get; set; }
 
+        [DataType(DataType.Date)]
+        public DateTime BeginCareDate { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime EndCareDate { get; set; }
+
+        public string Address { get; set; }
+
+        public string PhysicianName { get; set; }
+        public string PhysicianPhone { get; set; }
+
+        public bool FieldTripAuthorized { get; set; }
+
         public EnrollmentStatus Status { get; set; }
 
         // User ID From AspNetUsers table.
         public string ParentID { get; set; }
         public ApplicationUser Parent { get; set; }
-
-
-        //[Display(Name = "Teacher")]
-        //public string TeacherId { get; set; }
 
         [Display(Name = "Group")]
         public int GroupId { get; set; }

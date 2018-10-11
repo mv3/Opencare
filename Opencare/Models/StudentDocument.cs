@@ -14,7 +14,9 @@ namespace Opencare.Models
 
         [Required]
         [Display(Name = "Document Type")]
-        public string DocumentType { get; set; }
+        public int DocumentTypeId { get; set; }
+
+        public DocumentType DocumentType { get; set; }
         
         [Display(Name = "Uploaded (UTC)")]
         [DisplayFormat(DataFormatString = "{0:F}")]

@@ -13,6 +13,7 @@ using Opencare.Models;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
 using System.IO;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Opencare.Pages.Students
 {
@@ -32,10 +33,12 @@ namespace Opencare.Pages.Students
         [Display(Name = "Parent")]
         public string ParentName { get; set; }
 
+        public List<DocumentType> DocumentTypes { get; set; }
+
         public class UploadDocument
         {
             [Required]
-            public string DocumentType { get; set; }
+            public int DocumentTypeId { get; set; }
 
             [Required]
             public IFormFile Document { get; set; }
@@ -48,6 +51,7 @@ namespace Opencare.Pages.Students
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            DocumentTypes = await Context.DocumentType.ToListAsync();
 
             Student = await Context.Student
                 .Include(s => s.Parent)
@@ -59,7 +63,11 @@ namespace Opencare.Pages.Students
                 return NotFound();
             }
 
-            StudentDocs = await Context.StudentDocuments.Where(d => d.Student == Student).Include(d=>d.UploadUser).ToListAsync();
+            StudentDocs = await Context.StudentDocuments
+                .Where(d => d.Student == Student)
+                .Include(d=>d.UploadUser)
+                .Include(d=>d.DocumentType)
+                .ToListAsync();
 
             ParentName = Student.Parent.FirstName + " " + Student.Parent.LastName;
 
@@ -116,14 +124,16 @@ namespace Opencare.Pages.Students
                 var student = await Context.Student.FirstOrDefaultAsync(
                                                       m => m.StudentId == id);
                 var ext = Path.GetExtension(StudentDocument.Document.FileName);
+
+                var docType = await Context.DocumentType.Where(d => d.Id == StudentDocument.DocumentTypeId).FirstOrDefaultAsync();
                 
                 var SD = new StudentDocument
                 {
-                    DocumentType = StudentDocument.DocumentType,
+                    DocumentTypeId = StudentDocument.DocumentTypeId,
                     UploadDT = DateTime.Now,
                     UploadUser = UpUser,
                     Student = student,
-                    FileName = student.FirstName + "_" + student.LastName + "-" + StudentDocument.DocumentType + "-" + DateTime.Now.ToString("yyyy-dd-M--HH-mm-ss") + ext,
+                    FileName = student.FirstName + "_" + student.LastName + "-" + docType.Name + "-" + DateTime.Now.ToString("yyyy-dd-M-HH-mm-ss") + ext,
                     ContentType = StudentDocument.Document.ContentType
             };
 

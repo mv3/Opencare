@@ -139,6 +139,25 @@ namespace Opencare.Data
             }
             );
 
+            context.DocumentType.AddRange(
+                new DocumentType
+                {
+                    Name = "Medical Examination Report"
+                },
+                new DocumentType
+                {
+                    Name = "Medication Authorization"
+                },
+                new DocumentType
+                {
+                    Name = "Accident Report"
+                },
+                new DocumentType
+                {
+                    Name = "Immunization Record"
+                }
+            );
+
             context.Student.AddRange(
                 new Student
                 {

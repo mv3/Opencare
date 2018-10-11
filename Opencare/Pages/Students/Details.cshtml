@@ -84,9 +84,10 @@
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" name="id" value="@Model.Student.StudentId" />
     <div class="form-group">
-        <label asp-for="StudentDocument.DocumentType" class="control-label"></label>
-        <input asp-for="StudentDocument.DocumentType" class="form-control" />
-        <span asp-validation-for="StudentDocument.DocumentType" class="text-danger"></span>
+        <label asp-for="StudentDocument.DocumentTypeId" class="control-label"></label>
+        <select asp-for="StudentDocument.DocumentTypeId" asp-items="@(new SelectList(Model.DocumentTypes, "Id", "Name"))">
+        </select>
+        <span asp-validation-for="StudentDocument.DocumentTypeId" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="StudentDocument.Document" class="control-label"></label>
@@ -114,7 +115,7 @@
         <tr>
             <td>
                 <a asp-page="./Details" asp-page-handler="Download" asp-route-id="@item.Id">
-                    @Html.DisplayFor(modelItem => item.DocumentType)
+                    @Html.DisplayFor(modelItem => item.DocumentType.Name)
                 </a>
             </td>
             <td>

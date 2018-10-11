@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Opencare.Data;
 
 namespace Opencare.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181011150142_addDocumenttypes")]
+    partial class addDocumenttypes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,17 +247,9 @@ namespace Opencare.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Address");
-
-                    b.Property<DateTime>("BeginCareDate");
-
                     b.Property<DateTime>("Birthdate");
 
                     b.Property<bool>("Deleted");
-
-                    b.Property<DateTime>("EndCareDate");
-
-                    b.Property<bool>("FieldTripAuthorized");
 
                     b.Property<string>("FirstName");
 
@@ -266,10 +260,6 @@ namespace Opencare.Migrations
                     b.Property<string>("LastName");
 
                     b.Property<string>("ParentID");
-
-                    b.Property<string>("PhysicianName");
-
-                    b.Property<string>("PhysicianPhone");
 
                     b.Property<int>("Status");
 
@@ -293,7 +283,8 @@ namespace Opencare.Migrations
                     b.Property<byte[]>("Document")
                         .IsRequired();
 
-                    b.Property<int>("DocumentTypeId");
+                    b.Property<string>("DocumentType")
+                        .IsRequired();
 
                     b.Property<string>("FileName");
 
@@ -304,8 +295,6 @@ namespace Opencare.Migrations
                     b.Property<string>("UploadUserId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("DocumentTypeId");
 
                     b.HasIndex("StudentId");
 
@@ -395,11 +384,6 @@ namespace Opencare.Migrations
 
             modelBuilder.Entity("Opencare.Models.StudentDocument", b =>
                 {
-                    b.HasOne("Opencare.Models.DocumentType", "DocumentType")
-                        .WithMany()
-                        .HasForeignKey("DocumentTypeId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Opencare.Models.Student", "Student")
                         .WithMany("Documents")
                         .HasForeignKey("StudentId");
