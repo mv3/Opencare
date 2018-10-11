@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -23,17 +24,28 @@ namespace Opencare.Pages.Students
             UserManager<ApplicationUser> userManager) 
             : base(context, authorizationService, userManager)
         {
-            
+
         }
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
+        public ApplicationUser Parent { get; set; }
+
+        [Display(Name = "Parent")]
+        public string ParentName { get; set; }
+
 
         [BindProperty]
         public Student Student { get; set; }
 
+        public async Task<IActionResult> OnGetAsync(string id)
+        {
+            Parent = await UserManager.FindByIdAsync(id);
+            ParentName = Parent.FirstName + " " + Parent.LastName;
+            Student = new Student
+            {
+                ParentID = id
+            };
+            return Page();
+        }        
 
         public async Task<IActionResult> OnPostAsync()
         {
@@ -42,7 +54,6 @@ namespace Opencare.Pages.Students
                 return Page();
             }
 
-            Student.ParentID = UserManager.GetUserId(User);
             Student.Status = EnrollmentStatus.Pending;
 
             if(Context.Group.Any(g=>g.Name == "Unassigned"))

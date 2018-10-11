@@ -20,17 +20,22 @@ namespace Opencare.Models
         [DataType(DataType.Date)]
         public DateTime Birthdate { get; set; }
 
+        [Display(Name = "Begin Care Date")]
         [DataType(DataType.Date)]
         public DateTime BeginCareDate { get; set; }
 
+        [Display(Name = "End Care Date")]
         [DataType(DataType.Date)]
         public DateTime EndCareDate { get; set; }
 
         public string Address { get; set; }
 
+        [Display(Name = "Physician Name")]
         public string PhysicianName { get; set; }
+        [Display(Name = "Physician Phone")]
         public string PhysicianPhone { get; set; }
 
+        [Display(Name = "Field Trip Authorized")]
         public bool FieldTripAuthorized { get; set; }
 
         public EnrollmentStatus Status { get; set; }

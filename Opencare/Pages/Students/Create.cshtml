@@ -14,6 +14,11 @@
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
+                <label asp-for="ParentName" class="control-label"></label>
+                <input asp-for="ParentName" class="form-control" disabled />
+                <input type="hidden" asp-for="Student.ParentID" />
+            </div>
+            <div class="form-group">
                 <label asp-for="Student.FirstName" class="control-label"></label>
                 <input asp-for="Student.FirstName" class="form-control" />
                 <span asp-validation-for="Student.FirstName" class="text-danger"></span>
@@ -27,6 +32,36 @@
                 <label asp-for="Student.Birthdate" class="control-label"></label>
                 <input asp-for="Student.Birthdate" class="form-control" />
                 <span asp-validation-for="Student.Birthdate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.BeginCareDate" class="control-label"></label>
+                <input asp-for="Student.BeginCareDate" class="form-control" />
+                <span asp-validation-for="Student.BeginCareDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.EndCareDate" class="control-label"></label>
+                <input asp-for="Student.EndCareDate" class="form-control" />
+                <span asp-validation-for="Student.EndCareDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.Address" class="control-label"></label>
+                <input asp-for="Student.Address" class="form-control" />
+                <span asp-validation-for="Student.Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.PhysicianName" class="control-label"></label>
+                <input asp-for="Student.PhysicianName" class="form-control" />
+                <span asp-validation-for="Student.PhysicianName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.PhysicianPhone" class="control-label"></label>
+                <input asp-for="Student.PhysicianPhone" class="form-control" />
+                <span asp-validation-for="Student.PhysicianPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Student.FieldTripAuthorized" class="control-label"></label>
+                <input asp-for="Student.FieldTripAuthorized" class="form-control" />
+                <span asp-validation-for="Student.FieldTripAuthorized" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />

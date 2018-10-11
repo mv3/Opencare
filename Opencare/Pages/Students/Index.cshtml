@@ -5,11 +5,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Index</h2>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 @if (User.IsInRole(Constants.TeachersRole) || User.IsInRole(Constants.AdministratorsRole))
 {
     <h4>Students</h4>
@@ -17,7 +12,7 @@
     @foreach (var group in Model.Groups)
     {
         <h5>@group.Name</h5>
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th>
