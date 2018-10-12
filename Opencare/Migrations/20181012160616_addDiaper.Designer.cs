@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Opencare.Data;
 
 namespace Opencare.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181012160616_addDiaper")]
+    partial class addDiaper
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,33 +185,6 @@ namespace Opencare.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
-                });
-
-            modelBuilder.Entity("Opencare.Models.Diaper", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("ChangerId");
-
-                    b.Property<bool>("Dirty");
-
-                    b.Property<string>("Notes");
-
-                    b.Property<int?>("StudentId");
-
-                    b.Property<DateTime>("Time");
-
-                    b.Property<bool>("Wet");
-
-                    b.HasKey("id");
-
-                    b.HasIndex("ChangerId");
-
-                    b.HasIndex("StudentId");
-
-                    b.ToTable("Diapers");
                 });
 
             modelBuilder.Entity("Opencare.Models.DocumentType", b =>
@@ -399,17 +374,6 @@ namespace Opencare.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Opencare.Models.Diaper", b =>
-                {
-                    b.HasOne("Opencare.Data.ApplicationUser", "Changer")
-                        .WithMany()
-                        .HasForeignKey("ChangerId");
-
-                    b.HasOne("Opencare.Models.Student", "Student")
-                        .WithMany()
-                        .HasForeignKey("StudentId");
                 });
 
             modelBuilder.Entity("Opencare.Models.SignIn", b =>

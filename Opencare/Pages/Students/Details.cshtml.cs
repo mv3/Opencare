@@ -35,6 +35,10 @@ namespace Opencare.Pages.Students
 
         public List<DocumentType> DocumentTypes { get; set; }
 
+        public List<Diaper> Diapers { get; set; }
+        [BindProperty]
+        public Diaper Diaper { get; set; }
+
         public class UploadDocument
         {
             [Required]
@@ -62,6 +66,11 @@ namespace Opencare.Pages.Students
             {
                 return NotFound();
             }
+
+            Diapers = await Context.Diapers
+                .Where(d => d.Student == Student)
+                .ToListAsync();
+            Diaper = new Diaper { Time = DateTime.Now };
 
             StudentDocs = await Context.StudentDocuments
                 .Where(d => d.Student == Student)
@@ -151,6 +160,37 @@ namespace Opencare.Pages.Students
             return RedirectToPage("./Details", new { id });
 
         }
+
+        public async Task<IActionResult> OnPostNewDiaperAsync(int id)
+        {
+            ModelState.Remove("Document");
+            if (ModelState.IsValid)
+            {
+                ApplicationUser UpUser = await UserManager.FindByIdAsync(UserManager.GetUserId(User));
+                var student = await Context.Student.FirstOrDefaultAsync(
+                                                      m => m.StudentId == id);
+
+                var diaper = new Diaper
+                {
+                    Time = Diaper.Time,
+                    Wet = Diaper.Wet,
+                    Dirty = Diaper.Dirty,
+                    Notes = Diaper.Notes,
+                    Changer = UpUser,
+                    Student = student
+
+                };
+
+
+
+                Context.Add(diaper);
+                await Context.SaveChangesAsync();
+                return RedirectToPage("./Details", new { id });
+            }
+            return RedirectToPage("./Details", new { id });
+
+        }
+
 
         public FileResult OnGetDownload(int id)
         {

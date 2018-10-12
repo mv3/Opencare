@@ -33,5 +33,7 @@ namespace Opencare.Data
         public DbSet<Opencare.Models.StudentDocument> StudentDocuments { get; set; }
 
         public DbSet<Opencare.Models.DocumentType> DocumentType { get; set; }
+
+        public DbSet<Opencare.Models.Diaper> Diapers { get; set; }
     }
 }
