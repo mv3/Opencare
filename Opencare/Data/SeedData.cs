@@ -167,7 +167,6 @@ namespace Opencare.Data
                     Status = EnrollmentStatus.Pending,
                     ParentID = parents[0],
                     Group = group1,
-                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
                     IsSignedIn = false
                 },
                 new Student
@@ -178,7 +177,6 @@ namespace Opencare.Data
                     Status=EnrollmentStatus.Pending,
                     ParentID = parents[0],
                     Group = group2,
-                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
                     IsSignedIn = false
                 },
                 new Student
@@ -189,7 +187,6 @@ namespace Opencare.Data
                     Status=EnrollmentStatus.Pending,
                     ParentID = parents[0],
                     Group = group3,
-                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
                     IsSignedIn = false
                 },
                 new Student
@@ -200,7 +197,6 @@ namespace Opencare.Data
                     Status = EnrollmentStatus.Pending,
                     ParentID = parents[1],
                     Group = group1,
-                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
                     IsSignedIn = false
                 },
                 new Student
@@ -211,7 +207,6 @@ namespace Opencare.Data
                     Status = EnrollmentStatus.Pending,
                     ParentID = parents[1],
                     Group = group2,
-                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
                     IsSignedIn = false
                 },
                 new Student
@@ -222,7 +217,6 @@ namespace Opencare.Data
                     Status = EnrollmentStatus.Pending,
                     ParentID = parents[1],
                     Group = group3,
-                    SignIns = new List<SignIn> { new SignIn() { IsSignedIn = false, Time = DateTime.Now } },
                     IsSignedIn = false
                 }
             );

@@ -39,6 +39,16 @@ namespace Opencare.Pages.Students
         [BindProperty]
         public Diaper Diaper { get; set; }
 
+        public class AddBottle : Bottle
+        {
+            public string OtherType { get; set; }
+        }
+
+        public List<Bottle> Bottles { get; set; }
+        [BindProperty]
+        public AddBottle Bottle { get; set; }
+        public IEnumerable<SelectListItem> BottleTypes { get; set; }
+
         public class UploadDocument
         {
             [Required]
@@ -71,6 +81,21 @@ namespace Opencare.Pages.Students
                 .Where(d => d.Student == Student)
                 .ToListAsync();
             Diaper = new Diaper { Time = DateTime.Now };
+
+            Bottles = await Context.Bottles
+                .Where(d => d.Student == Student)
+                .ToListAsync();
+            Bottle = new AddBottle { Time = DateTime.Now };
+
+            var bottleTypeList = await Context.Bottles.Select(b => b.Type).Distinct().ToListAsync();
+
+            BottleTypes = bottleTypeList.Select(x =>
+                        new SelectListItem()
+                        {
+                            Text = x.ToString(),
+                            Value = x.ToString()
+                        });
+
 
             StudentDocs = await Context.StudentDocuments
                 .Where(d => d.Student == Student)
@@ -175,7 +200,7 @@ namespace Opencare.Pages.Students
                     Time = Diaper.Time,
                     Wet = Diaper.Wet,
                     Dirty = Diaper.Dirty,
-                    Notes = Diaper.Notes,
+                    Note = Diaper.Note,
                     Changer = UpUser,
                     Student = student
 
@@ -191,7 +216,41 @@ namespace Opencare.Pages.Students
 
         }
 
+        public async Task<IActionResult> OnPostNewBottleAsync(int id)
+        {
+            ModelState.Remove("Document");
+            if (ModelState.IsValid)
+            {
+                ApplicationUser UpUser = await UserManager.FindByIdAsync(UserManager.GetUserId(User));
+                var student = await Context.Student.FirstOrDefaultAsync(
+                                                      m => m.StudentId == id);
 
+                var bottle = new Bottle
+                {
+                    Time = Bottle.Time,
+                    Ounces = Bottle.Ounces,
+                    Note = Bottle.Note,
+                    Teacher = UpUser,
+                    Student = student
+                };
+
+                if (Bottle.Type == "Other")
+                {
+                    bottle.Type = Bottle.OtherType;
+                }
+                else
+                {
+                    bottle.Type = Bottle.Type;
+                }
+
+                Context.Add(bottle);
+                await Context.SaveChangesAsync();
+                return RedirectToPage("./Details", new { id });
+            }
+            return RedirectToPage("./Details", new { id });
+
+        }
+        
         public FileResult OnGetDownload(int id)
         {
             var doc = Context.StudentDocuments.Where(d => d.Id == id).Include(d => d.Student).FirstOrDefault();

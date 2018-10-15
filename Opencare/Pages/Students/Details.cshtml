@@ -71,8 +71,8 @@ User, Model.Student, StudentOperations.Reject)).Succeeded)
 
 <div>
     @if ((await AuthorizationService.AuthorizeAsync(
- User, Model.Student,
- StudentOperations.Update)).Succeeded)
+User, Model.Student,
+StudentOperations.Update)).Succeeded)
     {
         <a asp-page="./Edit" asp-route-id="@Model.Student.StudentId">Edit</a>
         <text> | </text>
@@ -158,36 +158,79 @@ User, Model.Student, StudentOperations.Reject)).Succeeded)
                 <th>@Html.DisplayNameFor(m => m.Diapers[0].Time)</th>
                 <th>@Html.DisplayNameFor(m => m.Diapers[0].Wet)</th>
                 <th>@Html.DisplayNameFor(m => m.Diapers[0].Dirty)</th>
-                <th>@Html.DisplayNameFor(m => m.Diapers[0].Notes)</th>
+                <th>@Html.DisplayNameFor(m => m.Diapers[0].Note)</th>
                 <th>@Html.DisplayNameFor(m => m.Diapers[0].Changer)</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var item in Model.Diapers)
             {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Time)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Wet)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Dirty)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Notes)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Changer.UserName) 
-                </td>
-            </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Wet)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Dirty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Changer.UserName)
+                    </td>
+                </tr>
             }
         </tbody>
     </table>
 </div>
 
-<!-- Document Modal -->
+<div id="bottles">
+    <h4>Bottles</h4>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bottleModal">
+        New Bottle
+    </button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.Bottles[0].Time)</th>
+                <th>@Html.DisplayNameFor(m => m.Bottles[0].Type)</th>
+                <th>@Html.DisplayNameFor(m => m.Bottles[0].Ounces)</th>
+                <th>@Html.DisplayNameFor(m => m.Bottles[0].Note)</th>
+                <th>@Html.DisplayNameFor(m => m.Bottles[0].Teacher)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Bottles)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Time)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Ounces)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Teacher.UserName)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<!-- Diaper Modal -->
 <div class="modal fade" id="diaperModal" tabindex="-1" role="dialog" aria-labelledby="diaperModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -217,9 +260,9 @@ User, Model.Student, StudentOperations.Reject)).Succeeded)
                         <span asp-validation-for="Diaper.Dirty" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Diaper.Notes" class="control-label"></label>
-                        <input asp-for="Diaper.Notes" class="form-control" />
-                        <span asp-validation-for="Diaper.Notes" class="text-danger"></span>
+                        <label asp-for="Diaper.Note" class="control-label"></label>
+                        <input asp-for="Diaper.Note" class="form-control" />
+                        <span asp-validation-for="Diaper.Note" class="text-danger"></span>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -233,7 +276,7 @@ User, Model.Student, StudentOperations.Reject)).Succeeded)
     </div>
 </div>
 
-<!-- Diaper Modal -->
+<!-- Document Modal -->
 <div class="modal fade" id="documentModal" tabindex="-1" role="dialog" aria-labelledby="documentModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -262,6 +305,60 @@ User, Model.Student, StudentOperations.Reject)).Succeeded)
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <div class="form-group">
                         <input type="submit" value="Add Document" asp-page-handler="NewDoc" class="btn btn-default" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bottle Modal -->
+<div class="modal fade" id="bottleModal" tabindex="-1" role="dialog" aria-labelledby="bottleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="bottleModalLabel">Add Bottle</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" name="id" value="@Model.Student.StudentId" />
+                    <div class="form-group">
+                        <label asp-for="Bottle.Time" class="control-label"></label>
+                        <input asp-for="Bottle.Time" class="form-control" />
+                        <span asp-validation-for="Bottle.Time" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bottle.Type" class="control-label"></label>
+                        <select asp-for="Bottle.Type" asp-items="@(new SelectList(Model.BottleTypes, "Value", "Text"))">
+                            <option value="Other">Other</option>
+                        </select>
+                        <span asp-validation-for="Bottle.Type" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bottle.OtherType" class="control-label"></label>
+                        <input asp-for="Bottle.OtherType" class="form-control" />
+                        <span asp-validation-for="Bottle.OtherType" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bottle.Ounces" class="control-label"></label>
+                        <input asp-for="Bottle.Ounces" class="form-control" />
+                        <span asp-validation-for="Bottle.Ounces" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Bottle.Note" class="control-label"></label>
+                        <input asp-for="Bottle.Note" class="form-control" />
+                        <span asp-validation-for="Bottle.Note" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <div class="form-group">
+                        <input type="submit" value="Add Bottle" asp-page-handler="NewBottle" class="btn btn-default" />
                     </div>
                 </div>
             </form>
