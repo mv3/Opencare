@@ -39,7 +39,7 @@
             @Html.DisplayNameFor(model => model.ParentName)
         </dt>
         <dd>
-            <a asp-page="/Users/Details" asp-route-id="@Model.Student.ParentID">@Html.DisplayFor(model => model.ParentName)</a>
+            <a asp-page="/Users/Details" asp-route-id="@Model.Student.Parent.UserName">@Html.DisplayFor(model => model.ParentName)</a>
         </dd>
     </dl>
 </div>
@@ -185,6 +185,7 @@ StudentOperations.Update)).Succeeded)
             }
         </tbody>
     </table>
+    <a asp-page="/Diapers/Index" asp-route-id="@Model.Student.StudentId">more...</a>
 </div>
 
 <div id="bottles">
@@ -227,6 +228,7 @@ StudentOperations.Update)).Succeeded)
             }
         </tbody>
     </table>
+    <a asp-page="/Bottles/Index" asp-route-id="@Model.Student.StudentId">more...</a>
 </div>
 
 

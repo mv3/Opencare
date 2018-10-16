@@ -78,12 +78,14 @@ namespace Opencare.Pages.Students
             }
 
             Diapers = await Context.Diapers
-                .Where(d => d.Student == Student)
+                .Where(d => d.Student == Student && d.Time.Date == DateTime.Today.Date)
+                .Include(d=>d.Changer)
                 .ToListAsync();
             Diaper = new Diaper { Time = DateTime.Now };
 
             Bottles = await Context.Bottles
-                .Where(d => d.Student == Student)
+                .Where(d => d.Student == Student && d.Time.Date == DateTime.Today.Date)
+                .Include(b=>b.Teacher)
                 .ToListAsync();
             Bottle = new AddBottle { Time = DateTime.Now };
 

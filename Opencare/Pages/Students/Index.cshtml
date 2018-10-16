@@ -5,6 +5,12 @@
     ViewData["Title"] = "Index";
 }
 
+<style type="text/css">
+    .signedIn {
+        background-color: palegreen !important;
+    }
+</style>
+
 @if (User.IsInRole(Constants.TeachersRole) || User.IsInRole(Constants.AdministratorsRole))
 {
     <h4>Students</h4>
@@ -38,7 +44,7 @@
                 {
                     @if (item.Group == group)
                     {
-                <tr>
+                <tr class="@if (item.IsSignedIn) { <text>signedIn</text> }">
                     <td>
                         @Html.DisplayFor(modelItem => item.FirstName)
                     </td>

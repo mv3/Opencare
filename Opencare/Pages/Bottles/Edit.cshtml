@@ -1,0 +1,50 @@
+﻿@page
+@model Opencare.Pages.Bottles.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h2>Edit</h2>
+
+<h4>Bottle</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Bottle.id" />
+            <div class="form-group">
+                <label asp-for="Bottle.Type" class="control-label"></label>
+                <input asp-for="Bottle.Type" class="form-control" />
+                <span asp-validation-for="Bottle.Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bottle.Ounces" class="control-label"></label>
+                <input asp-for="Bottle.Ounces" class="form-control" />
+                <span asp-validation-for="Bottle.Ounces" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bottle.Time" class="control-label"></label>
+                <input asp-for="Bottle.Time" class="form-control" />
+                <span asp-validation-for="Bottle.Time" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Bottle.Note" class="control-label"></label>
+                <input asp-for="Bottle.Note" class="form-control" />
+                <span asp-validation-for="Bottle.Note" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

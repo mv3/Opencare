@@ -30,7 +30,7 @@ namespace Opencare.Pages.Users
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            AppUser = await UserManager.FindByIdAsync(id);
+            AppUser = await UserManager.FindByNameAsync(id);
             if (AppUser == null)
             {
                 return NotFound($"Unable to load user with ID '{UserManager.GetUserId(User)}'.");
