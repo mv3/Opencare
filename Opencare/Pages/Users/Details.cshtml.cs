@@ -27,6 +27,7 @@ namespace Opencare.Pages.Users
         public ApplicationUser AppUser { get; set; }
         
         public List<Student> Children { get; set; }
+        public List<Student> Students { get; set; }
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -38,6 +39,7 @@ namespace Opencare.Pages.Users
             else
             {
                 Children = await Context.Student.Where(s => s.ParentID == AppUser.Id).ToListAsync();
+                Students = await Context.Student.Where(s => s.Group.TeacherId == AppUser.Id).ToListAsync();
             }
 
             return Page();

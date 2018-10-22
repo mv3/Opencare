@@ -1,0 +1,31 @@
+﻿@page
+@model Opencare.Pages.SignIns.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>SignIn</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.SignIn.IsSignedIn)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SignIn.IsSignedIn)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.SignIn.Time)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SignIn.Time)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.SignIn.SignInId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

@@ -74,7 +74,7 @@ namespace Opencare.Pages.Users
 
         public async Task<IActionResult> OnGetAsync(string id)
         {
-            var user = await UserManager.FindByIdAsync(id);
+            var user = await UserManager.FindByNameAsync(id);
             if (user == null)
             {
                 return NotFound($"Unable to load user with ID '{UserManager.GetUserId(User)}'.");
@@ -111,10 +111,10 @@ namespace Opencare.Pages.Users
                 return Page();
             }
 
-            var user = await UserManager.FindByIdAsync(id);
+            var user = await UserManager.FindByNameAsync(id);
             if (user == null)
             {
-                return NotFound($"Unable to load user with ID '{UserManager.GetUserId(User)}'.");
+                return NotFound($"Unable to load user.");
             }
 
             if (Input.FirstName != user.FirstName)
@@ -175,7 +175,7 @@ namespace Opencare.Pages.Users
             {
                 if (!await UserManager.IsInRoleAsync(user, "Administrators"))
                 {
-                    await UserManager.AddToRoleAsync(user, "Teachers");
+                    await UserManager.AddToRoleAsync(user, "Administrators");
                 }
             }
             else

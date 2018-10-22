@@ -1,0 +1,37 @@
+﻿@page
+@model Opencare.Pages.SignIns.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SignIn[0].IsSignedIn)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SignIn[0].Time)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.SignIn) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsSignedIn)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Time)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.SignInId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.SignInId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.SignInId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

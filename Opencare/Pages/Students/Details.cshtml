@@ -130,7 +130,7 @@ StudentOperations.Update)).Succeeded)
             </tr>
         </thead>
         <tbody>
-            @foreach (var item in Model.Student.SignIns.OrderByDescending(s => s.Time))
+            @foreach (var item in Model.Student.SignIns.Where(s => s.Time.Day == DateTime.Today.Day).OrderByDescending(s => s.Time))
             {
                 <tr>
                     <td>
@@ -143,6 +143,7 @@ StudentOperations.Update)).Succeeded)
             }
         </tbody>
     </table>
+    <a asp-page="/SignIns/Index" asp-route-id="@Model.Student.StudentId">more...</a>
 </div>
 
 <div id="diapers">

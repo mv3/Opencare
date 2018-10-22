@@ -38,6 +38,50 @@
     </dl>
 </div>
 
+<h4>Students</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].Birthdate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Students[0].Status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Students)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Birthdate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    <a asp-page="/Students/Details" asp-route-id="@item.StudentId">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 <h4>Children</h4>
 <p>
     <a asp-page="/Students/Create" asp-route-id="@Model.AppUser.Id">Add Child</a>
@@ -83,8 +127,6 @@
         }
     </tbody>
 </table>
-
-
 <div>
     <a asp-page="./Index">Back to List</a>
 </div>
