@@ -36,5 +36,6 @@ namespace Opencare.Data
 
         public DbSet<Opencare.Models.Diaper> Diapers { get; set; }
         public DbSet<Opencare.Models.Bottle> Bottles { get; set; }
+        public DbSet<Opencare.Models.StudentNote> StudentNote { get; set; }
     }
 }

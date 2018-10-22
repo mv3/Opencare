@@ -39,6 +39,10 @@ namespace Opencare.Pages.Students
         [BindProperty]
         public Diaper Diaper { get; set; }
 
+        public List<StudentNote> Notes { get; set; }
+        [BindProperty]
+        public StudentNote Note { get; set; }
+
         public class AddBottle : Bottle
         {
             public string OtherType { get; set; }
@@ -82,6 +86,12 @@ namespace Opencare.Pages.Students
                 .Include(d=>d.Changer)
                 .ToListAsync();
             Diaper = new Diaper { Time = DateTime.Now };
+
+            Notes = await Context.StudentNote
+                .Where(n => n.Student == Student && n.Date.Date == DateTime.Today.Date)
+                .Include(n=>n.AppUser)
+                .ToListAsync();
+            Note = new StudentNote { Date = DateTime.Now };
 
             Bottles = await Context.Bottles
                 .Where(d => d.Student == Student && d.Time.Date == DateTime.Today.Date)
@@ -252,7 +262,32 @@ namespace Opencare.Pages.Students
             return RedirectToPage("./Details", new { id });
 
         }
-        
+
+        public async Task<IActionResult> OnPostNewNoteAsync(int id)
+        {
+            ModelState.Remove("Document");
+            if (ModelState.IsValid)
+            {
+                ApplicationUser UpUser = await UserManager.FindByIdAsync(UserManager.GetUserId(User));
+                var student = await Context.Student.FirstOrDefaultAsync(
+                                                      m => m.StudentId == id);
+
+                var note = new StudentNote
+                {
+                    Date = Note.Date,
+                    Note = Note.Note,                   
+                    AppUser = UpUser,
+                    Student = student
+                };
+
+                Context.Add(note);
+                await Context.SaveChangesAsync();
+                return RedirectToPage("./Details", new { id });
+            }
+            return RedirectToPage("./Details", new { id });
+
+        }
+
         public FileResult OnGetDownload(int id)
         {
             var doc = Context.StudentDocuments.Where(d => d.Id == id).Include(d => d.Student).FirstOrDefault();

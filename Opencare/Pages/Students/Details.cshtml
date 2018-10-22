@@ -232,6 +232,40 @@ StudentOperations.Update)).Succeeded)
     <a asp-page="/Bottles/Index" asp-route-id="@Model.Student.StudentId">more...</a>
 </div>
 
+<div id="notes">
+    <h4>Notes</h4>
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#noteModal">
+        New Note
+    </button>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(m => m.Notes[0].Date.TimeOfDay)</th>
+                <th>@Html.DisplayNameFor(m => m.Notes[0].AppUser.UserName)</th>
+                <th>@Html.DisplayNameFor(m => m.Notes[0].Note)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Notes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Date.TimeOfDay)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AppUser.UserName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Note)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a asp-page="/Notes/Index" asp-route-id="@Model.Student.StudentId">more...</a>
+</div>
 
 <!-- Diaper Modal -->
 <div class="modal fade" id="diaperModal" tabindex="-1" role="dialog" aria-labelledby="diaperModalLabel" aria-hidden="true">
@@ -362,6 +396,42 @@ StudentOperations.Update)).Succeeded)
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <div class="form-group">
                         <input type="submit" value="Add Bottle" asp-page-handler="NewBottle" class="btn btn-default" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Note Modal -->
+<div class="modal fade" id="noteModal" tabindex="-1" role="dialog" aria-labelledby="noteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="noteModalLabel">Add Note</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" name="id" value="@Model.Student.StudentId" />
+                    <div class="form-group">
+                        <label asp-for="Note.Date" class="control-label"></label>
+                        <input asp-for="Note.Date" class="form-control" />
+                        <span asp-validation-for="Note.Date" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Note.Note" class="control-label"></label>
+                        <input asp-for="Note.Note" class="form-control" />
+                        <span asp-validation-for="Note.Note" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <div class="form-group">
+                        <input type="submit" value="Add Note" asp-page-handler="NewNote" class="btn btn-default" />
                     </div>
                 </div>
             </form>
